@@ -1,0 +1,347 @@
+
+.temp.file.elf:     file format elf32-littleriscv
+
+SYMBOL TABLE:
+00000000 l    d  .init	00000000 .init
+00000054 l    d  .text	00000000 .text
+02000000 l    d  .data	00000000 .data
+02000000 l    d  .bss	00000000 .bss
+02000000 l    d  .stack	00000000 .stack
+00000000 l    d  .riscv.attributes	00000000 .riscv.attributes
+00000000 l    d  .comment	00000000 .comment
+00000000 l    d  .debug_aranges	00000000 .debug_aranges
+00000000 l    d  .debug_info	00000000 .debug_info
+00000000 l    d  .debug_abbrev	00000000 .debug_abbrev
+00000000 l    d  .debug_line	00000000 .debug_line
+00000000 l    d  .debug_str	00000000 .debug_str
+00000000 l    d  .debug_loc	00000000 .debug_loc
+00000000 l    d  .debug_ranges	00000000 .debug_ranges
+00000000 l    d  .debug_frame	00000000 .debug_frame
+00000000 l    d  .debug_macro	00000000 .debug_macro
+00000000 l    df *ABS*	00000000 tls.c
+00000000 l    df *ABS*	00000000 
+0000007e l       .debug_info	00000000 
+0000007e l       .debug_info	00000000 
+0000007e l       .debug_info	00000000 
+0000007e l       .debug_info	00000000 
+0000007e l       .debug_info	00000000 
+0000007e l       .debug_info	00000000 
+0000007e l       .debug_info	00000000 
+0000007e l       .debug_info	00000000 
+0000007e l       .debug_info	00000000 
+0000007e l       .debug_info	00000000 
+0000007e l       .debug_info	00000000 
+0000007e l       .debug_info	00000000 
+0000007e l       .debug_info	00000000 
+0000007e l       .debug_info	00000000 
+0000007e l       .debug_info	00000000 
+0000007e l       .debug_info	00000000 
+0000007e l       .debug_info	00000000 
+0000007e l       .debug_info	00000000 
+00000000 g       *ABS*	00000000 __data_size
+02000800 g       .data	00000000 __global_pointer$
+02000000 g       .bss	00000000 __tls_base
+00000800 g       *ABS*	00000000 __flash_size
+00000040 g       *ABS*	00000000 __stack_size
+00000000 g       *ABS*	00000000 __bss_size
+000002f0 g     F .text	00000024 memcpy
+02000000 g       .bss	00000000 __bss_end
+00000000 g       *ABS*	00000000 __tbss_size
+000002e8 g     F .text	00000008 _set_tls
+00000000 g     F .init	00000000 _start
+02000000 g       *ABS*	00000000 __ram
+02000000 g       .bss	00000000 __data_end
+00000330 g       .text	00000000 __text_end
+02000000 g       .bss	00000000 __bss_start
+00000314 g     F .text	0000001c memset
+00000054 g     F .text	00000294 main
+00000100 g       *ABS*	00000000 __ram_size
+02000100 g       .init	00000000 __stack
+00000000 g     F *ABS*	00000000 vfscanf
+00000330 g       *ABS*	00000000 __data_source
+00000000 g       *ABS*	00000000 __flash
+02000000 g       .data	00000000 __data_start
+0000007e  w      .debug_info	00000000 .hidden t1b_path_planner.c.93680092
+00000000 g     F *ABS*	00000000 vfprintf
+
+
+
+Disassembly of section .init:
+
+00000000 <_start>:
+   0:	    02000117          	auipc	x2,0x2000
+   4:	    10010113          	addi	x2,x2,256 # 2000100 <__stack>
+   8:	    02000197          	auipc	x3,0x2000
+   c:	    7f818193          	addi	x3,x3,2040 # 2000800 <__global_pointer$>
+  10:	    02000517          	auipc	x10,0x2000
+  14:	    ff050513          	addi	x10,x10,-16 # 2000000 <__bss_end>
+  18:	    33000593          	addi	x11,x0,816
+  1c:	    00000613          	addi	x12,x0,0
+  20:	    2d0000ef          	jal	x1,2f0 <memcpy>
+  24:	    02000517          	auipc	x10,0x2000
+  28:	    fdc50513          	addi	x10,x10,-36 # 2000000 <__bss_end>
+  2c:	    00000593          	addi	x11,x0,0
+  30:	    00000613          	addi	x12,x0,0
+  34:	    2e0000ef          	jal	x1,314 <memset>
+  38:	    02000517          	auipc	x10,0x2000
+  3c:	    fc850513          	addi	x10,x10,-56 # 2000000 <__bss_end>
+  40:	    2a8000ef          	jal	x1,2e8 <_set_tls>
+  44:	    00000513          	addi	x10,x0,0
+  48:	    00000593          	addi	x11,x0,0
+  4c:	    008000ef          	jal	x1,54 <main>
+  50:	/-- 0000006f          	jal	x0,50 <__stack_size+0x10>
+
+Disassembly of section .text:
+
+00000054 <main>:
+     ### #define MAP                 ((volatile uint32_t * )  0x02000010)
+     ### 
+     ### 
+     ### int main() {
+     ###     // Wire values 10 and 30 to START_POINT and END_POINT respectively
+     ###     START_POINT = 10;
+  54:	    020007b7          	lui	x15,0x2000
+  58:	    00a00e13          	addi	x28,x0,10
+  5c:	    01c7a023          	sw	x28,0(x15) # 2000000 <__bss_end>
+     ###     END_POINT = 30;
+  60:	    01e00713          	addi	x14,x0,30
+  64:	    00e7a223          	sw	x14,4(x15)
+     ### 
+     ###     CPU_DONE =   0x00000000; // Initialize CPU_DONE to 0
+  68:	    0007a623          	sw	x0,12(x15)
+     ### 
+     ###     uint8_t idx = 120;
+     ###     // for (int i = 0; i < idx; i++) {
+     ###     //     map[i] = i; // store data starting from memory location 3
+     ###     // }
+     ###     map[0] = 1; map[1] = 1; map[2] = 1; map[3] = 1;
+  6c:	    00100613          	addi	x12,x0,1
+  70:	    00c7a823          	sw	x12,16(x15)
+  74:	    00c7aa23          	sw	x12,20(x15)
+  78:	    00c7ac23          	sw	x12,24(x15)
+  7c:	    00c7ae23          	sw	x12,28(x15)
+     ###     map[4] = 0; map[5] = 2; map[6] = 29; map[7] = 29;
+  80:	    0207a023          	sw	x0,32(x15)
+  84:	    00200593          	addi	x11,x0,2
+  88:	    02b7a223          	sw	x11,36(x15)
+  8c:	    01d00813          	addi	x16,x0,29
+  90:	    0307a423          	sw	x16,40(x15)
+  94:	    0307a623          	sw	x16,44(x15)
+     ###     map[8] = 1; map[9] = 3; map[10]= 8; map[11] =8;
+  98:	    02c7a823          	sw	x12,48(x15)
+  9c:	    00300893          	addi	x17,x0,3
+  a0:	    0317aa23          	sw	x17,52(x15)
+  a4:	    00800693          	addi	x13,x0,8
+  a8:	    02d7ac23          	sw	x13,56(x15)
+  ac:	    02d7ae23          	sw	x13,60(x15)
+     ###     map[12] = 2; map[13] = 2; map[14] = 4; map[15] = 28;
+  b0:	    04b7a023          	sw	x11,64(x15)
+  b4:	    04b7a223          	sw	x11,68(x15)
+  b8:	    00400713          	addi	x14,x0,4
+  bc:	    04e7a423          	sw	x14,72(x15)
+  c0:	    01c00513          	addi	x10,x0,28
+  c4:	    04a7a623          	sw	x10,76(x15)
+     ###     map[16] = 3; map[17] = 5; map[18] = 6; map[19] = 6;
+  c8:	    0517a823          	sw	x17,80(x15)
+  cc:	    00500313          	addi	x6,x0,5
+  d0:	    0467aa23          	sw	x6,84(x15)
+  d4:	    00600313          	addi	x6,x0,6
+  d8:	    0467ac23          	sw	x6,88(x15)
+  dc:	    0467ae23          	sw	x6,92(x15)
+     ###     map[20] = 4; map[21] = 4; map[22]= 4; map[23] =4;
+  e0:	    06e7a023          	sw	x14,96(x15)
+  e4:	    06e7a223          	sw	x14,100(x15)
+  e8:	    06e7a423          	sw	x14,104(x15)
+  ec:	    06e7a623          	sw	x14,108(x15)
+     ###     map[24] = 4; map[25] = 7; map[26] = 7; map[27] = 7;
+  f0:	    06e7a823          	sw	x14,112(x15)
+  f4:	    00700713          	addi	x14,x0,7
+  f8:	    06e7aa23          	sw	x14,116(x15)
+  fc:	    06e7ac23          	sw	x14,120(x15)
+ 100:	    06e7ae23          	sw	x14,124(x15)
+     ###     map[28] = 6; map[29] = 8; map[30] = 8; map[31] = 8;
+ 104:	    0867a023          	sw	x6,128(x15)
+ 108:	    08d7a223          	sw	x13,132(x15)
+ 10c:	    08d7a423          	sw	x13,136(x15)
+ 110:	    08d7a623          	sw	x13,140(x15)
+     ###     map[32] = 2; map[33] = 7; map[34]= 9; map[35] = 12;
+ 114:	    08b7a823          	sw	x11,144(x15)
+ 118:	    08e7aa23          	sw	x14,148(x15)
+ 11c:	    00900713          	addi	x14,x0,9
+ 120:	    08e7ac23          	sw	x14,152(x15)
+ 124:	    00c00313          	addi	x6,x0,12
+ 128:	    0867ae23          	sw	x6,156(x15)
+     ###     map[36] = 8; map[37] = 10; map[38] = 11; map[39] = 11;
+ 12c:	    0ad7a023          	sw	x13,160(x15)
+ 130:	    0bc7a223          	sw	x28,164(x15)
+ 134:	    00b00593          	addi	x11,x0,11
+ 138:	    0ab7a423          	sw	x11,168(x15)
+ 13c:	    0ab7a623          	sw	x11,172(x15)
+     ###     map[40] = 9; map[41] = 9; map[42] = 9; map[43] = 9;
+ 140:	    0ae7a823          	sw	x14,176(x15)
+ 144:	    0ae7aa23          	sw	x14,180(x15)
+ 148:	    0ae7ac23          	sw	x14,184(x15)
+ 14c:	    0ae7ae23          	sw	x14,188(x15)
+     ###     map[44] = 9; map[45] = 9; map[46]= 9; map[47] =9;
+ 150:	    0ce7a023          	sw	x14,192(x15)
+ 154:	    0ce7a223          	sw	x14,196(x15)
+ 158:	    0ce7a423          	sw	x14,200(x15)
+ 15c:	    0ce7a623          	sw	x14,204(x15)
+     ###     map[48] = 8; map[49] = 13; map[50] = 19; map[51] = 19;
+ 160:	    0cd7a823          	sw	x13,208(x15)
+ 164:	    00d00693          	addi	x13,x0,13
+ 168:	    0cd7aa23          	sw	x13,212(x15)
+ 16c:	    01300593          	addi	x11,x0,19
+ 170:	    0cb7ac23          	sw	x11,216(x15)
+ 174:	    0cb7ae23          	sw	x11,220(x15)
+     ###     map[52] = 12; map[53] = 14; map[54] = 14; map[55] = 14;
+ 178:	    0e67a023          	sw	x6,224(x15)
+ 17c:	    00e00713          	addi	x14,x0,14
+ 180:	    0ee7a223          	sw	x14,228(x15)
+ 184:	    0ee7a423          	sw	x14,232(x15)
+ 188:	    0ee7a623          	sw	x14,236(x15)
+     ###     map[56] = 13; map[57] = 15; map[58]= 16; map[59] =16;
+ 18c:	    0ed7a823          	sw	x13,240(x15)
+ 190:	    00f00693          	addi	x13,x0,15
+ 194:	    0ed7aa23          	sw	x13,244(x15)
+ 198:	    01000693          	addi	x13,x0,16
+ 19c:	    0ed7ac23          	sw	x13,248(x15)
+ 1a0:	    0ed7ae23          	sw	x13,252(x15)
+     ###     map[60] = 14; map[61] = 14; map[62] = 14; map[63] = 14;
+ 1a4:	    10e7a023          	sw	x14,256(x15)
+ 1a8:	    10e7a223          	sw	x14,260(x15)
+ 1ac:	    10e7a423          	sw	x14,264(x15)
+ 1b0:	    10e7a623          	sw	x14,268(x15)
+     ###     map[64] = 14; map[65] = 17; map[66] = 18; map[67] = 18;
+ 1b4:	    10e7a823          	sw	x14,272(x15)
+ 1b8:	    01100713          	addi	x14,x0,17
+ 1bc:	    10e7aa23          	sw	x14,276(x15)
+ 1c0:	    01200713          	addi	x14,x0,18
+ 1c4:	    10e7ac23          	sw	x14,280(x15)
+ 1c8:	    10e7ae23          	sw	x14,284(x15)
+     ###     map[68] = 16; map[69] = 16; map[70]= 16; map[71] =16;
+ 1cc:	    12d7a023          	sw	x13,288(x15)
+ 1d0:	    12d7a223          	sw	x13,292(x15)
+ 1d4:	    12d7a423          	sw	x13,296(x15)
+ 1d8:	    12d7a623          	sw	x13,300(x15)
+     ###     map[72] = 16; map[73] = 19; map[74] = 19; map[75] = 19;
+ 1dc:	    12d7a823          	sw	x13,304(x15)
+ 1e0:	    12b7aa23          	sw	x11,308(x15)
+ 1e4:	    12b7ac23          	sw	x11,312(x15)
+ 1e8:	    12b7ae23          	sw	x11,316(x15)
+     ###     map[76] = 12; map[77] = 18; map[78] = 20; map[79] = 20;
+ 1ec:	    1467a023          	sw	x6,320(x15)
+ 1f0:	    14e7a223          	sw	x14,324(x15)
+ 1f4:	    01400693          	addi	x13,x0,20
+ 1f8:	    14d7a423          	sw	x13,328(x15)
+ 1fc:	    14d7a623          	sw	x13,332(x15)
+     ###     map[80] = 19; map[81] = 21; map[82]= 24; map[83] =29;
+ 200:	    14b7a823          	sw	x11,336(x15)
+ 204:	    01500713          	addi	x14,x0,21
+ 208:	    14e7aa23          	sw	x14,340(x15)
+ 20c:	    01800313          	addi	x6,x0,24
+ 210:	    1467ac23          	sw	x6,344(x15)
+ 214:	    1507ae23          	sw	x16,348(x15)
+     ###     map[84] = 20; map[85] = 22; map[86] = 23; map[87] = 23;
+ 218:	    16d7a023          	sw	x13,352(x15)
+ 21c:	    01600593          	addi	x11,x0,22
+ 220:	    16b7a223          	sw	x11,356(x15)
+ 224:	    01700593          	addi	x11,x0,23
+ 228:	    16b7a423          	sw	x11,360(x15)
+ 22c:	    16b7a623          	sw	x11,364(x15)
+     ###     map[88] = 21; map[89] = 21; map[90] = 21; map[91] = 21;
+ 230:	    16e7a823          	sw	x14,368(x15)
+ 234:	    16e7aa23          	sw	x14,372(x15)
+ 238:	    16e7ac23          	sw	x14,376(x15)
+ 23c:	    16e7ae23          	sw	x14,380(x15)
+     ###     map[92] = 21; map[93] = 21; map[94]= 21; map[95] =21;
+ 240:	    18e7a023          	sw	x14,384(x15)
+ 244:	    18e7a223          	sw	x14,388(x15)
+ 248:	    18e7a423          	sw	x14,392(x15)
+ 24c:	    18e7a623          	sw	x14,396(x15)
+     ###     map[96] = 20; map[97] = 25; map[98] = 25; map[99] = 25;
+ 250:	    01900593          	addi	x11,x0,25
+ 254:	    18d7a823          	sw	x13,400(x15)
+ 258:	    18b7aa23          	sw	x11,404(x15)
+ 25c:	    18b7ac23          	sw	x11,408(x15)
+ 260:	    18b7ae23          	sw	x11,412(x15)
+     ###     map[100] = 24; map[101] = 26; map[102] = 26; map[103] = 26;
+ 264:	    1a67a023          	sw	x6,416(x15)
+ 268:	    01a00713          	addi	x14,x0,26
+ 26c:	    1ae7a223          	sw	x14,420(x15)
+ 270:	    1ae7a423          	sw	x14,424(x15)
+ 274:	    1ae7a623          	sw	x14,428(x15)
+     ###     map[104] = 25; map[105] = 27; map[106]= 28; map[107] =28;
+ 278:	    1ab7a823          	sw	x11,432(x15)
+ 27c:	    01b00593          	addi	x11,x0,27
+ 280:	    1ab7aa23          	sw	x11,436(x15)
+ 284:	    1aa7ac23          	sw	x10,440(x15)
+ 288:	    1aa7ae23          	sw	x10,444(x15)
+     ###     map[108] = 26; map[109] = 26; map[110] = 26; map[111] = 26;
+ 28c:	    1ce7a023          	sw	x14,448(x15)
+ 290:	    1ce7a223          	sw	x14,452(x15)
+ 294:	    1ce7a423          	sw	x14,456(x15)
+ 298:	    1ce7a623          	sw	x14,460(x15)
+     ###     map[112] = 3; map[113] = 26; map[114] = 29; map[115] = 29;
+ 29c:	    1d17a823          	sw	x17,464(x15)
+ 2a0:	    1ce7aa23          	sw	x14,468(x15)
+ 2a4:	    1d07ac23          	sw	x16,472(x15)
+ 2a8:	    1d07ae23          	sw	x16,476(x15)
+     ###     map[116] = 1; map[117] = 20; map[118]= 28; map[119] = 28;
+ 2ac:	    1ec7a023          	sw	x12,480(x15)
+ 2b0:	    1ed7a223          	sw	x13,484(x15)
+ 2b4:	    1ea7a423          	sw	x10,488(x15)
+     ### 
+     ###     // the node values are written into data memory sequentially.
+     ###     for (int i = 0; i < idx; ++i) {
+     ###         NODE_POINT = map[i];
+ 2b8:	    02000737          	lui	x14,0x2000
+     ###     map[116] = 1; map[117] = 20; map[118]= 28; map[119] = 28;
+ 2bc:	    1ea7a623          	sw	x10,492(x15)
+     ###     for (int i = 0; i < idx; ++i) {
+ 2c0:	    1f070693          	addi	x13,x14,496 # 20001f0 <__stack+0xf0>
+     ###     map[116] = 1; map[117] = 20; map[118]= 28; map[119] = 28;
+ 2c4:	    01078793          	addi	x15,x15,16
+     ###         NODE_POINT = map[i];
+ 2c8:	/-> 0007a603          	lw	x12,0(x15)
+     ###     for (int i = 0; i < idx; ++i) {
+ 2cc:	|   00478793          	addi	x15,x15,4
+     ###         NODE_POINT = map[i];
+ 2d0:	|   00c72423          	sw	x12,8(x14)
+     ###     for (int i = 0; i < idx; ++i) {
+ 2d4:	\-- fed79ae3          	bne	x15,x13,2c8 <__ram_size+0x1c8>
+     ###     }
+     ### 
+     ###     // Path Planning Computation Done Flag
+     ###     CPU_DONE =  0xFFFFFFFF;
+ 2d8:	    fff00793          	addi	x15,x0,-1
+ 2dc:	    00f72623          	sw	x15,12(x14)
+     ### 
+     ###     return 0;
+     ### }
+ 2e0:	    00000513          	addi	x10,x0,0
+ 2e4:	    00008067          	jalr	x0,0(x1)
+
+000002e8 <_set_tls>:
+ 2e8:	00050213          	addi	x4,x10,0
+ 2ec:	00008067          	jalr	x0,0(x1)
+
+000002f0 <memcpy>:
+ 2f0:	       00050313          	addi	x6,x10,0
+ 2f4:	/----- 00060e63          	beq	x12,x0,310 <memcpy+0x20>
+ 2f8:	|  /-> 00058383          	lb	x7,0(x11)
+ 2fc:	|  |   00730023          	sb	x7,0(x6)
+ 300:	|  |   fff60613          	addi	x12,x12,-1
+ 304:	|  |   00130313          	addi	x6,x6,1
+ 308:	|  |   00158593          	addi	x11,x11,1
+ 30c:	|  \-- fe0616e3          	bne	x12,x0,2f8 <memcpy+0x8>
+ 310:	\----> 00008067          	jalr	x0,0(x1)
+
+00000314 <memset>:
+ 314:	       00050313          	addi	x6,x10,0
+ 318:	/----- 00060a63          	beq	x12,x0,32c <memset+0x18>
+ 31c:	|  /-> 00b30023          	sb	x11,0(x6)
+ 320:	|  |   fff60613          	addi	x12,x12,-1
+ 324:	|  |   00130313          	addi	x6,x6,1
+ 328:	|  \-- fe061ae3          	bne	x12,x0,31c <memset+0x8>
+ 32c:	\----> 00008067          	jalr	x0,0(x1)
