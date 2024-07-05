@@ -1,0 +1,19 @@
+# ignore ALL files
+*.qsf
+*.qws
+*.rpf
+*.qdf
+*.bak
+*.rpt
+*.swp
+serv_req_info.txt
+
+# ignore ALL files in ANY directory named 
+db/
+incremental_db/
+output_files/
+simulation/
+
+
+
+
