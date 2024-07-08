@@ -6,7 +6,7 @@ module data_mem #(parameter DATA_WIDTH = 32,
                   input [ADDR_WIDTH-1:0] wr_addr,
                   input [DATA_WIDTH-1:0] wr_data,
                   input [1:0] store_sel, // 00: sb, 01: sh, 10: sw
-                  output reg [DATA_WIDTH-1:0] rd_data_mem, // Changed to reg to allow sequential reads
+                  output [DATA_WIDTH-1:0] rd_data_mem, // Changed to reg to allow sequential reads
                   output reg CPU_DONE
                   );
     
@@ -16,15 +16,13 @@ module data_mem #(parameter DATA_WIDTH = 32,
     // Word-aligned memory access
     wire [ADDR_WIDTH-3:0] word_addr = wr_addr[ADDR_WIDTH-1:2] % MEM_SIZE;
     reg [31:0] data;
-    
-    // Read logic (sequential)
-    integer i = 4;
-    
-    always @(posedge clk) begin
-        if (CPU_DONE && i < 124) begin
-            rd_data_mem <= data_ram[i]; // Sequentially read data from memory
-            i = i + 1;
-        end
+
+    // Read logic (combinational)
+    assign rd_data_mem = data_ram[word_addr];
+
+    initial begin
+        //data_ram[3] = 32'h00000000;
+		  CPU_DONE = 0;
     end
     
     // CPU_DONE signal generation
