@@ -5,7 +5,8 @@
 #define END_POINT           (* (volatile uint32_t * ) 0x02000004)
 #define NODE_POINT          (* (volatile uint32_t * ) 0x02000008)
 #define CPU_DONE            (* (volatile uint32_t * ) 0x0200000c)
-#define MAP                 ((volatile uint32_t * )  0x02000010)
+#define idx                 (* (volatile uint32_t * ) 0x02000010)
+#define MAP                 (  (volatile uint32_t * ) 0x02000020)
 
 
 int main() {
@@ -18,14 +19,14 @@ int main() {
     // Initialize the map pointer to start at memory location 3
     volatile uint32_t *map = MAP;
 
-    uint8_t idx = 120;
+    idx = 120;
     // for (int i = 0; i < idx; i++) {
     //     map[i] = i; // store data starting from memory location 3
     // }
     map[0] = 1; map[1] = 1; map[2] = 1; map[3] = 1;
     map[4] = 0; map[5] = 2; map[6] = 29; map[7] = 29;
     map[8] = 1; map[9] = 3; map[10]= 8; map[11] =8;
-    map[12] = 2; map[13] = 2; map[14] = 4; map[15] = 28;
+    map[12] = 2; map[13] = 4; map[14] = 28; map[15] = 28;
     map[16] = 3; map[17] = 5; map[18] = 6; map[19] = 6;
     map[20] = 4; map[21] = 4; map[22]= 4; map[23] =4;
     map[24] = 4; map[25] = 7; map[26] = 7; map[27] = 7;
