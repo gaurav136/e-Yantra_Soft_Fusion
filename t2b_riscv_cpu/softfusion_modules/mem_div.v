@@ -1,4 +1,6 @@
 
+
+
 module mem_div #(parameter DATA_WIDTH = 32,
                  ADDR_WIDTH = 32,
                  MEM_SIZE = 128)
@@ -6,17 +8,17 @@ module mem_div #(parameter DATA_WIDTH = 32,
                  input CPU_DONE,
                  input [DATA_WIDTH-1:0] wr_data,
                  output [ADDR_WIDTH-1:0] read_addr,
-                 output [DATA_WIDTH-1:0] rd_sub_mem0,
-                 output [DATA_WIDTH-1:0] rd_sub_mem1,
-                 output [DATA_WIDTH-1:0] rd_sub_mem2,
-                 output [DATA_WIDTH-1:0] rd_sub_mem3);
+                 output [DATA_WIDTH-1:0] final_path_node);
     
     reg [3:0] sub_mem_wr_en;
-    reg [ADDR_WIDTH-1:0] sub_mem_wr_addr;
+    reg [ADDR_WIDTH-1:0] sub_mem_addr, mem_div_addr;
     wire sipo_done;
     wire [DATA_WIDTH-1:0] sipo_out[0:3];
     reg [ADDR_WIDTH-3:0] rd_addr;
     reg map_full;
+    wire [DATA_WIDTH-1:0] rd_sub_mem0, rd_sub_mem1, rd_sub_mem2, rd_sub_mem3;
+    wire [ADDR_WIDTH-1:0] sub_mem_wr_addr;
+    
     // SIPO instance
     SIPO sipo_inst (
     .clk(clk),
@@ -31,21 +33,19 @@ module mem_div #(parameter DATA_WIDTH = 32,
     
     // Reset the write enable signals and address register on power-up
     initial begin
-        sub_mem_wr_en   = 4'b0;
-        sub_mem_wr_addr = 32'b0;
-        rd_addr         = 29'd0;
-        map_full        = 0;
+        sub_mem_wr_en = 4'b0;
+        mem_div_addr  = 32'hffff_ffff;
+        rd_addr       = 29'h0;
+        map_full      = 0;
     end
     
     assign read_addr = {rd_addr, 2'b00};
     
     always @(posedge clk) begin
-        
-        if (CPU_DONE && rd_addr < 29'd127) begin
+        if (CPU_DONE && rd_addr < MEM_SIZE) begin
             rd_addr  <= rd_addr + 29'd1;
             map_full <= 1;
             end else begin
-            rd_addr  <= 0; // Or some other default value
             map_full <= 0;
         end
     end
@@ -54,16 +54,36 @@ module mem_div #(parameter DATA_WIDTH = 32,
         if (map_full) begin
             if (sipo_done) begin
                 // Distribute data to sub-memories and update address
-                sub_mem_wr_addr <= sub_mem_wr_addr + 1;
-                sub_mem_wr_en   <= 4'b1111;
+                mem_div_addr  <= mem_div_addr + 1;
+                sub_mem_wr_en <= 4'b1111;
                 end else begin
                 sub_mem_wr_en <= 4'b0;
             end
-        end
-        else begin
+            end else begin
             sub_mem_wr_en <= 4'b0;
         end
     end
+    
+    // Instantiate the mux2 module (ensure it's correctly implemented)
+    mux2 #(32) dij_div (
+    .d0(dijkstra_mem_addr),
+    .d1(mem_div_addr),
+    .sel(map_full),
+    .y(sub_mem_wr_addr)
+    );
+    
+    // Instantiate the Dijkstra module
+    dijkstra Dijkstra (
+    .clk(clk),
+    .start(map_full),
+    .data_to_dijkstra_1(rd_sub_mem0),
+    .data_to_dijkstra_2(rd_sub_mem1),
+    .data_to_dijkstra_3(rd_sub_mem2),
+    .data_to_dijkstra_4(rd_sub_mem3),
+    .done(done),
+    .node_addr(dijkstra_mem_addr),
+    .final_path_node(final_path_node)
+    );
     
     // Instantiate the sub memories
     sub_mem #(.DATA_WIDTH(DATA_WIDTH), .ADDR_WIDTH(ADDR_WIDTH), .MEM_SIZE(32)) sub_memory0 (
@@ -99,4 +119,6 @@ module mem_div #(parameter DATA_WIDTH = 32,
     );
     
 endmodule
+    
+    
     

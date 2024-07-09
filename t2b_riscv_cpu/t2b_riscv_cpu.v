@@ -16,14 +16,15 @@ module t2b_riscv_cpu (input clk,
     wire [31:0] DataAdr_rv32, WriteData_rv32;
     wire [1:0] Store;
     wire CPU_DONE;
-    wire [31:0] rd_sub_mem0, rd_sub_mem1, rd_sub_mem2, rd_sub_mem3;
+    wire [31:0] final_path_node;
     wire [31:0] ReadAddr, ACD;
     // instantiate processor and memories
     riscv_cpu rvsingle (clk, reset, PC, Instr, MemWrite_rv32, DataAdr_rv32, WriteData_rv32, Store, ReadData);
     instr_mem imem (PC, Instr);
     data_mem dmem (clk, MemWrite, ACD, WriteData, Store, ReadData, CPU_DONE);
-    mem_div mem_dijkstra(clk, CPU_DONE, ReadData, ReadAddr,rd_sub_mem0, rd_sub_mem1, rd_sub_mem2, rd_sub_mem3);
+    mem_div mem_dijkstra(clk, CPU_DONE, ReadData, ReadAddr, final_path_node);
     mux2 #(32) addr_cpu_div ( DataAdr,ReadAddr,CPU_DONE , ACD );
+    //mux2 #(32) addr_cpu_div (WriteData,final_path_node,CPU_DONE , ACD );
     
     // output assignments
     assign MemWrite  = (Ext_MemWrite && reset) ? 1 : MemWrite_rv32;
