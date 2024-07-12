@@ -8,13 +8,14 @@ module mem_div #(parameter DATA_WIDTH = 32,
                  input CPU_DONE,
                  input [DATA_WIDTH-1:0] wr_data,
                  output [ADDR_WIDTH-1:0] read_addr,
-                 output [DATA_WIDTH-1:0] final_path_node);
+                 output [DATA_WIDTH-1:0] final_path_node
+					  );
     
     reg [3:0] sub_mem_wr_en;
     reg [ADDR_WIDTH-1:0] sub_mem_addr, mem_div_addr;
     wire sipo_done;
     wire [DATA_WIDTH-1:0] sipo_out[0:3];
-    reg [ADDR_WIDTH-3:0] rd_addr;
+    reg [ADDR_WIDTH-1:0] rd_addr;
     reg map_full;
     wire [DATA_WIDTH-1:0] rd_sub_mem0, rd_sub_mem1, rd_sub_mem2, rd_sub_mem3;
     wire [ADDR_WIDTH-1:0] sub_mem_wr_addr;
@@ -30,20 +31,21 @@ module mem_div #(parameter DATA_WIDTH = 32,
     .PO2(sipo_out[2]),
     .PO3(sipo_out[3])
     );
+
+     assign read_addr = {rd_addr[29:0], 2'b00};
     
     // Reset the write enable signals and address register on power-up
     initial begin
         sub_mem_wr_en = 4'b0;
         mem_div_addr  = 32'hffff_ffff;
-        rd_addr       = 29'h0;
+        rd_addr       = 32'h0;
         map_full      = 0;
     end
     
-    assign read_addr = {rd_addr, 2'b00};
     
     always @(posedge clk) begin
-        if (CPU_DONE && rd_addr < MEM_SIZE) begin
-            rd_addr  <= rd_addr + 29'd1;
+        if (CPU_DONE && rd_addr < MEM_SIZE+1) begin
+            rd_addr  <= rd_addr + 32'h1;
             map_full <= 1;
             end else begin
             map_full <= 0;
@@ -72,7 +74,7 @@ module mem_div #(parameter DATA_WIDTH = 32,
     .y(sub_mem_wr_addr)
     );
     
-    // Instantiate the Dijkstra module
+  // Instantiate the Dijkstra module
     dijkstra Dijkstra (
     .clk(clk),
     .start(map_full),
@@ -81,8 +83,8 @@ module mem_div #(parameter DATA_WIDTH = 32,
     .data_to_dijkstra_3(rd_sub_mem2),
     .data_to_dijkstra_4(rd_sub_mem3),
     .done(done),
-    .node_addr(dijkstra_mem_addr),
-    .final_path_node(final_path_node)
+    .next_node_addr(dijkstra_mem_addr)
+    //.final_path_node(final_path_node)
     );
     
     // Instantiate the sub memories

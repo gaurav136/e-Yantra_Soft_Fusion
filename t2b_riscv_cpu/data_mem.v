@@ -27,7 +27,7 @@ module data_mem #(parameter DATA_WIDTH = 32,
     
     // CPU_DONE signal generation
     always @(*) begin
-        CPU_DONE = (data_ram[3] == 32'hFFFFFFFF) ? 1 : 0; // Check for 0xFFFFFFFF
+        CPU_DONE = (data_ram[123] == 32'hFFFFFFFF) ? 1 : 0; // Check for 0xFFFFFFFF
     end
     
     // Data selection logic
