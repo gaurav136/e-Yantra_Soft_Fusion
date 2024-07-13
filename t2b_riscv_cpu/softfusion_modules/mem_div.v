@@ -8,8 +8,7 @@ module mem_div #(parameter DATA_WIDTH = 32,
                  input CPU_DONE,
                  input [DATA_WIDTH-1:0] wr_data,
                  output [ADDR_WIDTH-1:0] read_addr,
-                 output [DATA_WIDTH-1:0] final_path_node
-					  );
+                 output [DATA_WIDTH-1:0] final_path_node);
     
     reg [3:0] sub_mem_wr_en;
     reg [ADDR_WIDTH-1:0] sub_mem_addr, mem_div_addr;
@@ -31,8 +30,8 @@ module mem_div #(parameter DATA_WIDTH = 32,
     .PO2(sipo_out[2]),
     .PO3(sipo_out[3])
     );
-
-     assign read_addr = {rd_addr[29:0], 2'b00};
+    
+    assign read_addr = {rd_addr[29:0], 2'b00};
     
     // Reset the write enable signals and address register on power-up
     initial begin
@@ -44,16 +43,23 @@ module mem_div #(parameter DATA_WIDTH = 32,
     
     
     always @(posedge clk) begin
-        if (CPU_DONE && rd_addr < MEM_SIZE+1) begin
-            rd_addr  <= rd_addr + 32'h1;
-            map_full <= 1;
-            end else begin
+        if(CPU_DONE) begin    
+            if (rd_addr < MEM_SIZE+1) begin
+                rd_addr  <= rd_addr + 32'h1;
+                map_full <= 0;
+                end else begin
+                map_full <= 1;
+            end
+        end
+        else begin
             map_full <= 0;
         end
     end
     
     always @(posedge clk) begin
         if (map_full) begin
+            sub_mem_wr_en <= 4'b0;
+            end else begin
             if (sipo_done) begin
                 // Distribute data to sub-memories and update address
                 mem_div_addr  <= mem_div_addr + 1;
@@ -61,20 +67,18 @@ module mem_div #(parameter DATA_WIDTH = 32,
                 end else begin
                 sub_mem_wr_en <= 4'b0;
             end
-            end else begin
-            sub_mem_wr_en <= 4'b0;
         end
     end
     
     // Instantiate the mux2 module (ensure it's correctly implemented)
     mux2 #(32) dij_div (
-    .d0(dijkstra_mem_addr),
-    .d1(mem_div_addr),
+    .d0(mem_div_addr),
+    .d1(dijkstra_mem_addr),
     .sel(map_full),
     .y(sub_mem_wr_addr)
     );
     
-  // Instantiate the Dijkstra module
+    // Instantiate the Dijkstra module
     dijkstra Dijkstra (
     .clk(clk),
     .start(map_full),

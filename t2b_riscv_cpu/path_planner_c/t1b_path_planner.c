@@ -11,8 +11,8 @@
 
 int main() {
     // Wire values 10 and 30 to START_POINT and END_POINT respectively
-    START_POINT = 10;
-    END_POINT = 30;
+    START_POINT = 0;
+    END_POINT = 7;
 
     CPU_DONE =   0x00000000; // Initialize CPU_DONE to 0
 
