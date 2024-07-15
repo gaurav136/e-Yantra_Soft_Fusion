@@ -9,8 +9,7 @@ module dijkstra #(parameter node_count = 30,
                   output reg done,
                   output reg [31:0] clock_cycles,
                   output reg [10*5-1:0] final_path,
-                  output reg [31:0] next_node_addr
-                  );
+                  output reg [31:0] next_node_addr);
     
     reg [31:0] data_to_dijkstra[0:max_edges-1]; // Buffer to hold data from SIPO module
     
@@ -47,30 +46,30 @@ module dijkstra #(parameter node_count = 30,
         sel            = {1'b1, {1'b0, 1'b0, 1'b0, 1'b0, 1'b0}, {infinity}};
         visited_count  = 0;
         count          = 0;
-        s_node         = 0;
-        e_node         = 0;
-        next_node      = 5'd31;
-        s_node         = data_to_dijkstra_2[4:0];
-        e_node         = data_to_dijkstra_1[4:0];
+        next_node      = 5'd30;
+        s_node         = data_to_dijkstra_3[4:0];
+        e_node         = data_to_dijkstra_2[4:0];
     end
     
-
+    
     always@(*)begin
         next_node_addr <= {27'b0,next_node[4:0]};
     end
-
-
+    
+    
     always @(posedge clk) begin
         clock_cycles <= clock_cycles + 1;
         case(next_state)
             IDLE: begin
-                if (start == 1) begin
-                    next_node     <= 0;
-                    done          <= 0;
-                    visited_count <= 0;
-                    j             <= s_node;
-                    count         <= 1;
-                    i             <= 0;
+                if (start) begin
+                    s_node = data_to_dijkstra_3[4:0];
+                    e_node = data_to_dijkstra_2[4:0];
+                    next_node_addr <= 32'd30;
+                    done           <= 0;
+                    visited_count  <= 0;
+                    j              <= s_node;
+                    count          <= 1;
+                    i              <= 0;
                     for (k = 1; k < node_count; k = k + 1) begin
                         dist[k]   <= {1'b0, s_node, infinity};
                         dist_h[k] <= {1'b0, s_node, infinity};
@@ -96,7 +95,7 @@ module dijkstra #(parameter node_count = 30,
                 
                 // Update distances of all neighbors in parallel
                 for (k = 0; k < max_edges; k = k + 1) begin
-                    if (((adj[j][k][9:0] + min[9:0]) < dist_h[adj[j][k][14:10]][9:0]) && dist_h[adj[j][k][14:10]][15] != 1) begin
+                    if (((adj[j][k][9:0] + min[9:0]) < dist_h[adj[j][k][14:10]][9:0]) && dist_h[adj[j][k][14:10]][15] ! = 1) begin
                         dist[adj[j][k][14:10]] <= {1'b0, j, {adj[j][k][9:0] + min[9:0]}};
                         end else begin
                         dist[adj[j][k][14:10]] <= dist_h[adj[j][k][14:10]];
@@ -107,7 +106,7 @@ module dijkstra #(parameter node_count = 30,
             end
             CHOOSE_NEXT_NODE: begin
                 if (i < node_count) begin
-                    if (dist[i][9:0] < sel[9:0] && dist_h[i][15] != 1) begin
+                    if (dist[i][9:0] < sel[9:0] && dist_h[i][15] ! = 1) begin
                         sel       <= {1'b0, j, dist[i][9:0]};
                         min_index <= i;
                     end
@@ -117,7 +116,8 @@ module dijkstra #(parameter node_count = 30,
                         next_state <= UPDATE_VISIT;
                     end
                 end
-                UPDATE_VISIT: begin
+
+            UPDATE_VISIT: begin
                     if (visited_count == 38) begin // Check if all nodes have been mapped
                         next_state            <= PATH_RETRACE;
                         j                     <= e_node;
@@ -139,7 +139,8 @@ module dijkstra #(parameter node_count = 30,
                                 next_state <= UPDATE_VISIT;
                             end
                         end
-                        PATH_RETRACE: begin
+                        
+            PATH_RETRACE: begin
                             if (j == 5'b11011) begin
                                 done       <= 1;
                                 final_path <= final_path_reg;
