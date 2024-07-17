@@ -1,6 +1,3 @@
-
-
-
 module mem_div #(parameter DATA_WIDTH = 32,
                  ADDR_WIDTH = 32,
                  MEM_SIZE = 128)
@@ -18,6 +15,8 @@ module mem_div #(parameter DATA_WIDTH = 32,
     reg map_full;
     wire [DATA_WIDTH-1:0] rd_sub_mem0, rd_sub_mem1, rd_sub_mem2, rd_sub_mem3;
     wire [ADDR_WIDTH-1:0] sub_mem_wr_addr;
+    wire [ADDR_WIDTH-1:0] dijkstra_mem_addr;
+    wire done;
     
     // SIPO instance
     SIPO sipo_inst (

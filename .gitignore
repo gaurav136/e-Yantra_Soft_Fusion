@@ -8,17 +8,16 @@
 *.swp
 serv_req_info.txt
 
+
+# Unignore specific files in the ignored directories
+!dump_txt.txt
+!tb.v
+
 # ignore ALL files in ANY directory named 
 db/
 incremental_db/
 output_files/
 simulation/
-
-
-# Unignore specific files in the ignored directories
-!t2b_riscv_cpu/simulation/modelsim/dump_txt.txt
-!t2b_riscv_cpu/simulation/modelsim/tb.v
-
 
 
 
