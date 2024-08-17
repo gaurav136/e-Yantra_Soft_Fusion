@@ -38,6 +38,7 @@ SYMBOL TABLE:
 00000078 l       .debug_info	00000000 
 00000078 l       .debug_info	00000000 
 00000078 l       .debug_info	00000000 
+00000078  w      .debug_info	00000000 .hidden path_planner.c.a169dfeb
 00000000 g       *ABS*	00000000 __data_size
 02000800 g       .data	00000000 __global_pointer$
 02000000 g       .bss	00000000 __tls_base
@@ -47,7 +48,6 @@ SYMBOL TABLE:
 00000320 g     F .text	00000024 memcpy
 02000000 g       .bss	00000000 __bss_end
 00000000 g       *ABS*	00000000 __tbss_size
-00000078  w      .debug_info	00000000 .hidden t1b_path_planner.c.dc9f034a
 00000318 g     F .text	00000008 _set_tls
 00000000 g     F .init	00000000 _start
 02000000 g       *ABS*	00000000 __ram
@@ -322,7 +322,6 @@ Disassembly of section .text:
  2f4:	|  |   1ee7a623          	sw	x14,492(x15)
      ### 
      ###     return 0;
-     ### }
  2f8:	|  |   00000513          	addi	x10,x0,0
  2fc:	|  |   00008067          	jalr	x0,0(x1)
      ###         NODE_POINT = map[i];

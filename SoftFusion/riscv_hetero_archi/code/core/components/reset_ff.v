@@ -1,7 +1,7 @@
 
 // reset_ff.v - 8-bit resettable D flip-flop
 
-module reset_ff #(parameter WIDTH = 8) (
+module reset_ff #(parameter WIDTH = 32) (
     input       clk, rst,
     input       [WIDTH-1:0] d,
     output reg  [WIDTH-1:0] q

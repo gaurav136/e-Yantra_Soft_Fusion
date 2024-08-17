@@ -54,10 +54,10 @@ always @(*) begin
             case (funct3)
                 3'b000:     controls = 17'b0_10_0_0_xx_1_01_0_xx_xxx_0; // Branch beq
                 3'b001:     controls = 17'b0_10_0_0_xx_1_01_0_xx_xxx_0; // Branch bne
-                3'b100:     controls = 17'b0_10_0_0_xx_1_11_0_xx_xxx_0; // Branch bltu
-                3'b101:     controls = 17'b0_10_0_0_xx_1_11_0_xx_xxx_0; // Branch bgeu
-                3'b010:     controls = 17'b0_10_0_0_xx_1_01_0_xx_xxx_0; // Branch blt
-                3'b011:     controls = 17'b0_10_0_0_xx_1_01_0_xx_xxx_0; // Branch bge
+                3'b110:     controls = 17'b0_10_0_0_xx_1_11_0_xx_xxx_0; // Branch bltu
+                3'b111:     controls = 17'b0_10_0_0_xx_1_11_0_xx_xxx_0; // Branch bgeu
+                3'b100:     controls = 17'b0_10_0_0_xx_1_01_0_xx_xxx_0; // Branch blt
+                3'b101:     controls = 17'b0_10_0_0_xx_1_01_0_xx_xxx_0; // Branch bge
                 default:    controls = 17'b0_10_0_0_xx_1_01_0_xx_xxx_0; // Default case (could be used for invalid funct3)
             endcase
         end
@@ -75,7 +75,7 @@ always @(*) begin
             3'b000: Take_Branch = Zero;  //beq
             3'b001: Take_Branch = ~Zero;  //bne
             3'b100: Take_Branch = ALUR31; //blt
-            3'b101: Take_Branch = !ALUR31; //bge
+            3'b101: Take_Branch = ~ALUR31; //bge
             3'b110: Take_Branch = ~Zero ; //bltu
             3'b111: Take_Branch = Zero; //bgeu
             

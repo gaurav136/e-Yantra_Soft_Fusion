@@ -19,20 +19,21 @@ module datapath (input clk,
                  output ALUR31,
                  output [31:0] PC,
                  output [31:0] Mem_WrAddr,
-                 output [31:0] Mem_WrData);
+                 output [31:0] Mem_WrData,
+                 output [31:0] Result);
     
     
     
     wire [31:0] PCNext, PCPlus4, PCTarget, PCNextJalr;
     wire [31:0] AuLuiPC, Auipc;
-    wire [31:0] ImmExt, SrcA, SrcB, Result, WriteData, ALUResult;
+    wire [31:0] ImmExt, SrcA, SrcB, WriteData, ALUResult; // Result
     wire [31:0] Load_Extend_Data,Store_Extend_Data;
     wire [1:0]  Add_offset;
     
     // next PC logic
     reset_ff #(32)      pcreg(clk, reset, PCNextJalr, PC);
-    adder               pcadd4(PC, 32'h0000_0004, PCPlus4); //32'd4
-    adder               pcaddbranch(PC, ImmExt, PCTarget);
+    adder  #(32)             pcadd4(PC, 32'd4, PCPlus4);
+    adder #(32)         pcaddbranch(PC, ImmExt, PCTarget);
     mux2 #(32)          pcmux(PCPlus4, PCTarget, PCSrc, PCNext);
     mux2 #(32)	        pcmuxJalr(PCNext, ALUResult,Jalr,PCNextJalr);
     

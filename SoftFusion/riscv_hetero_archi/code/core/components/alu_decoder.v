@@ -11,7 +11,7 @@ module alu_decoder (input opb5,
         case (ALUOp)
             2'b00: ALUControl = 4'b0000;             // addition
             2'b01: ALUControl = 4'b1000;             // subtraction
-				2'b11: ALUControl = 4'b0011;             // branch  if greater than or equal unsigned using sltu
+			2'b11: ALUControl = 4'b0011;             // branch  if greater than or equal unsigned using sltu
             default:
             case (funct3) // R-type or I-type ALU
                 3'b000:  begin
@@ -25,8 +25,8 @@ module alu_decoder (input opb5,
                 3'b100:  ALUControl = 4'b0100; // xor, xori
                 
                 3'b101:  begin
-                    if	 (funct7b5) ALUControl = 4'b0101; //sra, srai
-                    else ALUControl           = 4'b1101; //srl, srli
+                    if	 (funct7b5) ALUControl = 4'b1101; //sra, srai
+                    else ALUControl           = 4'b0101; //srl, srli
                 end
                 
                 3'b110:  ALUControl = 4'b0110; // or, ori

@@ -8,12 +8,14 @@ module riscv_cpu (input clk,
                   output [31:0] Mem_WrAddr,
                   output [31:0] Mem_WrData,
                   output [1:0] Store,
-                  input [31:0] ReadData);
+                  input [31:0] ReadData,
+                  output [31:0] Result);
     
     wire        ALUSrc, RegWrite, Zero, ALUR31, PCSrc, Jalr, Jump, Op5;
     wire [1:0]  ResultSrc, ImmSrc;
     wire [2:0]  Load;
     wire [3:0]  ALUControl;
+    //wire [31:0] Result;
     
     
     
@@ -23,7 +25,7 @@ module riscv_cpu (input clk,
     
     datapath    dp (clk, reset, Instr,ReadData, ResultSrc, PCSrc,Jalr,
                     ALUSrc, RegWrite, Op5, ImmSrc, Store,Load , ALUControl,
-                    Zero,ALUR31, PC, Mem_WrAddr, Mem_WrData);
+                    Zero,ALUR31, PC, Mem_WrAddr, Mem_WrData, Result);
     
 endmodule
 
