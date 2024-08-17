@@ -47,6 +47,7 @@ SYMBOL TABLE:
 00000320 g     F .text	00000024 memcpy
 02000000 g       .bss	00000000 __bss_end
 00000000 g       *ABS*	00000000 __tbss_size
+00000078  w      .debug_info	00000000 .hidden t1b_path_planner.c.dc9f034a
 00000318 g     F .text	00000008 _set_tls
 00000000 g     F .init	00000000 _start
 02000000 g       *ABS*	00000000 __ram
@@ -55,7 +56,6 @@ SYMBOL TABLE:
 02000000 g       .bss	00000000 __bss_start
 00000344 g     F .text	0000001c memset
 00000054 g     F .text	000002c4 main
-00000078  w      .debug_info	00000000 .hidden t1b_path_planner.c.e2377a76
 00000100 g       *ABS*	00000000 __ram_size
 02000100 g       .init	00000000 __stack
 00000000 g     F *ABS*	00000000 vfscanf

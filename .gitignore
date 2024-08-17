@@ -1,23 +1,11 @@
-# ignore ALL files
-*.qsf
-*.qws
-*.rpf
-*.qdf
+#ignore this files
 *.bak
+*.qws
 *.rpt
-*.swp
-serv_req_info.txt
 
-
-# Unignore specific files in the ignored directories
-!dump_txt.txt
-!tb.v
-
-# ignore ALL files in ANY directory named 
+#ignore this folders
 db/
 incremental_db/
-output_files/
 simulation/
-
-
+output_files/
 
